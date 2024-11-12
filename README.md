@@ -11,6 +11,9 @@
 
 ## Configurações
 ### AWS
+#### S3
+- Criar um Bucket para subir os arquivos
+
 #### IAM
 - Criação de uma nova política para acesso ao S3. Exemplo:
 ```
@@ -25,7 +28,7 @@
         "s3:DeleteObject"
       ],
       "Resource": [
-        "arn:aws:s3:::SEU_BUCKET/*"
+        "arn:aws:s3:::NOME_BUCKET/*"
       ]
     }
   ]
@@ -42,7 +45,44 @@
   - Git Server
   - AWS S3 Publisher
   - Pipeline 
+- Criar um novo Job
+  - Pipeline Script
 
+```
+pipeline {
+    agent any
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        BUCKET_NAME = 'nome-do-bucket'
+    }
+    stages {
+        stage('Clonar Código') {
+            steps {
+                git credentialsId: 'GITHUB_CREDENTIALS_ID', url: 'https://github.com/nome-repo.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Exemplo de comando de build, modifique conforme sua aplicação
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
+        stage('Upload to S3') {
+            steps {
+                script {
+                    def s3UploadCommand = """
+                        aws s3 sync ./build s3://$BUCKET_NAME --delete
+                    """
+                    sh "AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY} ${s3UploadCommand}"
+                }
+            }
+        }
+    }
+}
+
+```
 
 ## Referências
 :link: https://github.com/GiMerguizo/integracao-jenkins-grafana/tree/main <br>
