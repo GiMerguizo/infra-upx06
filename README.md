@@ -45,6 +45,10 @@
   - Git Server
   - AWS S3 Publisher
   - Pipeline 
+  - Pipeline Stage View
+  - AWS Credentials
+- Configurar um agent <br>
+:video_camera: https://www.youtube.com/watch?v=99DddJiH7lM
 - Criar um novo Job
   - Pipeline Script
 
