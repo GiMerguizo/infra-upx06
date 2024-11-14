@@ -1,6 +1,6 @@
 # Infraestrutura do Projeto de UPX06 
 
-![infra-site](./Midias/Fluxo%20estrutural%20de%20aplicativos%20web%20AWS.png)
+![infra-site](./Midias/Arquitetura.png)
 
 ## Ferramentas utilizadas:
 - AWS: S3, CloudFront, EC2
