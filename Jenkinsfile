@@ -39,9 +39,12 @@ pipeline {
 
         stage('Invalidar Cache do CloudFront') {
             steps {
-                script {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-access-key', // Substitua pelo ID configurado
+                ]]) {
                     sh '''
-                    aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths "/*"
+                    aws cloudfront create-invalidation --distribution-id E2QHBGXQGTL4XZ --paths /*
                     '''
                 }
             }
