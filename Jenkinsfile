@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         AWS_ACCESS_KEY_ID = credentials('aws-access-key')  // ID configurado no Jenkins
-        AWS_SECRET_ACCESS_KEY = $AWS_SECRET_ACCESS_KEY // Secret configurado no Jenkins
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key') // Secret configurado no Jenkins
         S3_BUCKET = 'projeto-upx06'
         CLOUDFRONT_DIST_ID = 'E2QHBGXQGTL4XZ'
     }
