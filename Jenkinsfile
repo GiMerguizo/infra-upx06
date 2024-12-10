@@ -18,15 +18,25 @@ pipeline {
                 echo 'Build concluído!'
             }
         }
+        stage('Testar AWS CLI') {
+            steps {
+                sh 'aws --version'
+            }
+        }
+
         stage('Upload para S3') {
             steps {
-                script {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-access-key', // ID configurado no Jenkins
+                ]]) {
                     sh '''
-                    aws s3 sync . s3://$S3_BUCKET --delete
+                    aws s3 sync . s3://projeto-upx06 --delete
                     '''
                 }
             }
         }
+
         stage('Invalidar Cache do CloudFront') {
             steps {
                 script {
